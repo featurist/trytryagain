@@ -1,0 +1,36 @@
+{
+  "name": "trytrytryagain",
+  "version": "0.1.0",
+  "description": "Keep trying until it works. Actually a very reliable testing strategy.",
+  "main": "index.js",
+  "directories": {
+  },
+  "dependencies": {
+    "bluebird": "^2.2.2"
+  },
+  "devDependencies": {
+    "chai-as-promised": "^4.1.1",
+    "mocha": "^1.21.4",
+    "chai": "^1.9.1",
+    "pogo": "^0.9.4"
+  },
+  "scripts": {
+    "test": "mocha",
+    "prepublish": "pogo -c index.pogo"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/featurist/trytrytryagain.git"
+  },
+  "keywords": [
+    "retry",
+    "testing",
+    "test"
+  ],
+  "author": "Tim Macfarlane <timmacfarlane@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/featurist/trytrytryagain/issues"
+  },
+  "homepage": "https://github.com/featurist/trytrytryagain"
+}
