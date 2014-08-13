@@ -4,25 +4,29 @@
 
 Retrying assertions is a very reliable strategy for testing applications, whether you're testing in the browser, on mobile, or testing networked applications. Anywhere timing is variable.
 
-    var retry = require('trytryagain');
+```JavaScript
+var retry = require('trytryagain');
 
-    describe('my application', function () {
-      it('has the right title', function () {
+describe('my application', function () {
+  it('has the right title', function () {
 
-        return retry(function () {
+    return retry(function () {
 
-          return browser.title().then(function (title) {
-            return expect(title).to.equal('My App');
-          });
-
-        });
-
+      return browser.title().then(function (title) {
+        return expect(title).to.equal('My App');
       });
+
     });
+
+  });
+});
+```
 
 ## retry
 
-    var promise = retry(function, [options]);
+```JavaScript
+var promise = retry(function, [options]);
+```
 
 Where:
 
