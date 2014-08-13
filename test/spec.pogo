@@ -3,7 +3,7 @@ chai = require 'chai'
 expect = chai.expect
 chai.use(require 'chai-as-promised')
 
-describe 'trytrytryagain'
+describe 'trytryagain'
   it 'retries for up to a second, throwing the last exception'
     timing = time!
       expect (retry @{
