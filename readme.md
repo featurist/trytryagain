@@ -22,6 +22,12 @@ describe('my application', function () {
 });
 ```
 
+## NPM: [trytryagain](https://www.npmjs.org/package/trytryagain)
+
+```sh
+npm install trytryagain
+```
+
 ## retry
 
 ```JavaScript
