@@ -1,4 +1,6 @@
-# When at first you don't succeed try try try again
+# If at first you don't succeed, try try again
+
+[![if at first you don't succeed, try try again](http://img.youtube.com/vi/WwlWgMTCp8w/0.jpg)](http://www.youtube.com/watch?v=WwlWgMTCp8w)
 
 Retrying assertions is a very reliable strategy for testing applications, whether your testing web or mobile apps, or network applications.
 
