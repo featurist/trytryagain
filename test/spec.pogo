@@ -53,7 +53,7 @@ describe 'trytryagain'
 
     expect(intervals.0).to.be.within 0 2
     remaining = intervals.slice 1
-    expect(avg(remaining)).to.be.within 10 12
+    expect(avg(remaining)).to.be.within 10 13
 
   it 'interval can be set'
     last = @new Date().getTime()
@@ -70,6 +70,29 @@ describe 'trytryagain'
     expect(intervals.0).to.be.within 0 2
     remaining = intervals.slice 1
     expect(avg(remaining)).to.be.within 200 210
+
+  describe 'ensuring'
+    it 'makes the assertion repeatedly until timeout'
+      lastResult = nil
+      times = 0
+
+      timing = time!
+        retry.ensuring(duration = 200)!
+          expect(5).to.equal 5
+          lastResult := ++times
+
+      expect(timing.duration).to.be.within 200 220
+      expect(lastResult).to.equal(times)
+
+    it 'it stops as soon as the block throws'
+      times = 0
+
+      timing = time!
+        expect(retry.ensuring(duration = 200) @{
+          expect(++times).to.be.below 5
+        }).to.be.rejectedWith('expected 5 to be below 5')!
+
+      expect(timing.duration).to.be.within 40 50
 
 time (block)! =
   startTime = @new Date().getTime()

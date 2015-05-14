@@ -1,59 +1,90 @@
-(function() {
-    var Promise = require("bluebird");
-    var gen1_promisify = function(fn) {
-        return new Promise(function(onFulfilled, onRejected) {
-            fn(function(error, result) {
-                if (error) {
-                    onRejected(error);
-                } else {
-                    onFulfilled(result);
-                }
-            });
-        });
-    };
-    var self = this;
-    var wait;
-    module.exports = function(fn, gen2_options) {
-        var self = this;
-        var timeout, interval;
-        timeout = gen2_options !== void 0 && Object.prototype.hasOwnProperty.call(gen2_options, "timeout") && gen2_options.timeout !== void 0 ? gen2_options.timeout : 1e3;
-        interval = gen2_options !== void 0 && Object.prototype.hasOwnProperty.call(gen2_options, "interval") && gen2_options.interval !== void 0 ? gen2_options.interval : 10;
-        var startTime, retryLoop, gen3_asyncResult;
-        return new Promise(function(gen4_onFulfilled) {
-            startTime = new Date().getTime();
-            retryLoop = function() {
-                var gen5_asyncResult;
-                return new Promise(function(gen4_onFulfilled) {
-                    gen4_onFulfilled(new Promise(function(gen4_onFulfilled) {
-                        gen4_onFulfilled(Promise.resolve(fn()));
-                    }).then(void 0, function(e) {
-                        var now, gen6_asyncResult;
-                        return new Promise(function(gen4_onFulfilled) {
-                            now = new Date().getTime();
-                            gen4_onFulfilled(Promise.resolve(function() {
-                                if (now < startTime + timeout) {
-                                    return new Promise(function(gen4_onFulfilled) {
-                                        gen4_onFulfilled(Promise.resolve(wait(interval)).then(function(gen7_asyncResult) {
-                                            gen7_asyncResult;
-                                            return Promise.resolve(retryLoop());
-                                        }));
-                                    });
-                                } else {
-                                    throw e;
-                                }
-                            }()));
-                        });
-                    }));
-                });
-            };
-            gen4_onFulfilled(Promise.resolve(retryLoop()));
-        });
-    };
-    wait = function(n) {
-        return new Promise(function(gen4_onFulfilled) {
-            gen4_onFulfilled(gen1_promisify(function(gen8_callback) {
-                return setTimeout(gen8_callback, n);
-            }));
-        });
-    };
-}).call(this);
+module.exports = function(fn, options) {
+  if (typeof options === 'function') {
+    var opts = fn;
+    fn = options;
+    options = fn;
+  }
+
+  var timeout = options && options.hasOwnProperty('timeout') && options.timeout !== undefined? options.timeout: 1000;
+  var interval = options && options.hasOwnProperty('interval') && options.interval !== undefined? options.interval: 10;
+
+  var startTime = Date.now();
+
+  function waitAndLoop(error) {
+    return wait(interval).then(function () {
+      return retryLoop(error);
+    });
+  }
+
+  function retryLoop(lastError) {
+    if (lastError && ((startTime + timeout) < Date.now())) {
+      return Promise.reject(lastError);
+    }
+
+    var result;
+    var error;
+
+    try {
+      result = fn();
+    } catch(e) {
+      error = e;
+    }
+
+    if (result && typeof result.then === 'function') {
+      return result.then(undefined, waitAndLoop);
+    } else if (error) {
+      return waitAndLoop(error);
+    } else {
+      return Promise.resolve(result);
+    }
+  }
+
+  return retryLoop();
+};
+
+module.exports.ensuring = function (fn, options) {
+  if (typeof options === 'function') {
+    var opts = fn;
+    fn = options;
+    options = fn;
+  }
+
+  var duration = options && options.hasOwnProperty('duration') && options.duration !== undefined? options.duration: 1000;
+  var interval = options && options.hasOwnProperty('interval') && options.interval !== undefined? options.interval: 10;
+
+  var startTime = Date.now();
+
+  function waitAndLoop(result) {
+    return wait(interval).then(function () {
+      return retryLoop(result);
+    });
+  }
+
+  function retryLoop(lastResult) {
+    if (((startTime + duration) < Date.now())) {
+      return Promise.resolve(lastResult);
+    }
+
+    var result;
+
+    try {
+      result = fn();
+    } catch(e) {
+      return Promise.reject(e);
+    }
+
+    if (result && typeof result.then === 'function') {
+      return result.then(waitAndLoop);
+    } else {
+      return waitAndLoop(result);
+    }
+  }
+
+  return retryLoop();
+};
+
+function wait(n) {
+  return new Promise(function (fulfil) {
+    setTimeout(fulfil, n);
+  });
+}
