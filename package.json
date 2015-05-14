@@ -14,8 +14,7 @@
     "pogo": "^0.9.4"
   },
   "scripts": {
-    "test": "mocha",
-    "prepublish": "pogo -c index.pogo"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
