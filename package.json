@@ -1,10 +1,9 @@
 {
   "name": "trytryagain",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Keep trying until it works. Actually a very reliable testing strategy.",
   "main": "index.js",
-  "directories": {
-  },
+  "directories": {},
   "dependencies": {
     "bluebird": "^2.2.2"
   },
