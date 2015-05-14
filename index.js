@@ -1,3 +1,5 @@
+var Promise = require('bluebird');
+
 module.exports = function(fn, options) {
   if (typeof options === 'function') {
     var opts = fn;
