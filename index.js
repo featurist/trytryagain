@@ -4,7 +4,7 @@ module.exports = function(fn, options) {
   if (typeof options === 'function') {
     var opts = fn;
     fn = options;
-    options = fn;
+    options = opts;
   }
 
   var timeout = options && options.hasOwnProperty('timeout') && options.timeout !== undefined? options.timeout: 1000;
@@ -48,7 +48,7 @@ module.exports.ensuring = function (fn, options) {
   if (typeof options === 'function') {
     var opts = fn;
     fn = options;
-    options = fn;
+    options = opts;
   }
 
   var duration = options && options.hasOwnProperty('duration') && options.duration !== undefined? options.duration: 1000;
