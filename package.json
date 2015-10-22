@@ -4,7 +4,7 @@
   "description": "Keep trying until it works. Actually a very reliable testing strategy.",
   "main": "index.js",
   "directories": {},
-  "dependencies": {
+  "optionalDependencies": {
     "bluebird": "^2.2.2"
   },
   "devDependencies": {
