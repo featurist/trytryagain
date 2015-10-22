@@ -1,4 +1,6 @@
-var Promise = require('bluebird');
+if (!Promise) {
+  Promise = require('bluebird');
+}
 
 module.exports = function(fn, options) {
   if (typeof options === 'function') {
