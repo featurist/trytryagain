@@ -1,3 +1,5 @@
+var originalSetTimeout = setTimeout;
+
 module.exports = function(fn, options) {
   if (typeof options === 'function') {
     var opts = fn;
@@ -85,6 +87,6 @@ module.exports.ensuring = function (fn, options) {
 
 function wait(n) {
   return new Promise(function (fulfil) {
-    setTimeout(fulfil, n);
+    originalSetTimeout(fulfil, n);
   });
 }
